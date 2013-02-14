@@ -1,4 +1,6 @@
-var _ = require('underscore');
+if (!(typeof(require) === 'undefined')) {
+  var _ = require('underscore');
+}
 
 var Snake = {};
 
@@ -88,4 +90,6 @@ Snake.makeBoard = function (dim) {
   }
 };
 
-module.exports = Snake;
+if (!(typeof(module) === 'undefined')) {
+  module.exports = Snake;
+}
