@@ -1,10 +1,13 @@
 var SnakeUI = {};
 
+SnakeUI.stepMillis = 500;
+
 SnakeUI.makeSnakeGameController = function () {
   return {
     _board: null,
     _snake: null,
     _el: null,
+    _intervalId: null,
 
     handleKeyEvent: function (event) {
       switch (event.keyCode) {
@@ -35,15 +38,14 @@ SnakeUI.makeSnakeGameController = function () {
       this._board.addSnake(this._snake);
     },
 
-    runLoop: function () {
-      this.step();
-
-      window.setTimeout(this.runLoop.bind(this), 400);
+    startStepLoop: function () {
+      this._intervalId = window.setInterval(
+        this.step.bind(this), SnakeUI.stepMillis);
     },
 
     run: function () {
       $(window).keydown(this.handleKeyEvent.bind(this));
-      this.runLoop();
+      this.startStepLoop();
     }
   };
 };
