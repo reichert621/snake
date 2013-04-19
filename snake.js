@@ -14,7 +14,7 @@ var SnakeGame = (function () {
     this.dir = 'N';
     this.symbol = symbol;
 
-    var center = Snake.coord(board.dim / 2, board.dim / 2);
+    var center = new Coord(board.dim / 2, board.dim / 2);
     this.segments = [center];
   }
 
@@ -50,7 +50,7 @@ var SnakeGame = (function () {
 
   function Board(dim) {
     this.dim = dim;
-    this.snakes: [];
+    this.snakes = [];
   }
 
   Board.prototype.addSnake = function (snake) {
@@ -61,9 +61,9 @@ var SnakeGame = (function () {
 
   Board.prototype.render = function () {
     var that = this;
-    var grid = Board.blankGrid();
 
-    _.each(this._snakes, function (snake) {
+    var grid = Board.blankGrid(that.dim);
+    _.each(that.snakes, function (snake) {
       _.each(snake.segments, function (seg) {
         grid[seg.i][seg.j] = snake.symbol;
       });
@@ -76,19 +76,16 @@ var SnakeGame = (function () {
     ).join("\n");
   }
 
-  Board.blankGrid: function () {
-    var grid = [];
-
-    _.times(this.dim, function () {
-      return _.times(this.dim, function () {
+  Board.blankGrid = function (dim) {
+    return _.times(dim, function () {
+      return _.times(dim, function () {
         return ".";
       });
     });
-
-    return grid;
   };
 
   return {
+    Board: Board,
     Coord: Coord,
     Snake: Snake
   }

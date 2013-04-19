@@ -14,5 +14,14 @@
 
   <body>
     <pre id="canvas"></pre>
+
+    <script>
+      $(function () {
+        var snakeGameView =
+          new SnakeUI.SnakeGameView($("#canvas")[0]);
+
+        snakeGameView.start();
+      });
+    </script>
   </body>
 </html>
