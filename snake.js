@@ -1,95 +1,95 @@
-if (!(typeof(require) === 'undefined')) {
-  var _ = require('underscore');
-}
-
-var Snake = {};
-
-Snake.coord = function (i, j) {
-  return {
-    i: i,
-    j: j,
-
-    plus: function (c2) {
-      return Snake.coord(this.i + c2.i, this.j + c2.j);
-    }
+var SnakeGame = (function () {
+  function Coord(i, j) {
+    this.i = i;
+    this.j = j;
   }
-};
 
-Snake.makeSnake = function (board, symbol) {
-  var center = Snake.coord(board.dim / 2, board.dim / 2);
+  Coord.prototype.plus = function (coord2) {
+    var that = this;
 
-  return {
-    _board: board,
-    _dir: 'N',
-    symbol: symbol,
-    segments: [center],
+    return new Coord(that.i + coord2.i, that.j + coord2.j);
+  };
 
-    turn: function (dir) {
-      this._dir = dir;
-    },
+  function Snake(board, symbol) {
+    this.dir = 'N';
+    this.symbol = symbol;
 
-    move: function () {
-      var head = _.last(this.segments);
-
-      var diff = null;
-      switch (this._dir) {
-      case 'N':
-        diff = Snake.coord(-1, 0);
-        break;
-      case 'E':
-        diff = Snake.coord(0, 1);
-        break;
-      case 'S':
-        diff = Snake.coord(1, 0);
-        break;
-      case 'W':
-        diff = Snake.coord(0, -1);
-        break;
-      }
-
-      this.segments.push(head.plus(diff));
-      this.segments.shift();
-    }
+    var center = Snake.coord(board.dim / 2, board.dim / 2);
+    this.segments = [center];
   }
-};
 
-Snake.makeBoard = function (dim) {
-  return {
-    dim: dim,
-    _snakes: [],
+  Snake.prototype.turn = function (dir) {
+    var that = this;
 
-    addSnake: function(snake) {
-      this._snakes.push(snake);
-    },
+    that.dir = dir;
+  };
 
-    _blankGrid: function () {
-      var grid = [];
+  Snake.prototype.move = function () {
+    var that = this;
+    var head = _.last(that.segments);
 
-      for (var i = 0; i < this.dim; i++) {
-        grid.push([]);
-        for (var j = 0; j < this.dim; j++) {
-          _.last(grid).push(".");
-        }
-      }
+    var diff = null;
+    switch (that.dir) {
+    case 'N':
+      diff = new Coord(-1, 0);
+      break;
+    case 'E':
+      diff = new Coord(0, 1);
+      break;
+    case 'S':
+      diff = new Coord(1, 0);
+      break;
+    case 'W':
+      diff = new Coord(0, -1);
+      break;
+    }
 
-      return grid;
-    },
+    that.segments.push(head.plus(diff));
+    that.segments.shift();
+  };
 
-    renderBoard: function () {
-      var grid = this._blankGrid();
+  function Board(dim) {
+    this.dim = dim;
+    this.snakes: [];
+  }
 
-      _.each(this._snakes, function (snake) {
-        _.each(snake.segments, function (seg) {
-          grid[seg.i][seg.j] = snake.symbol;
-        });
+  Board.prototype.addSnake = function (snake) {
+    var that = this;
+
+    that.snakes.push(snake);
+  };
+
+  Board.prototype.render = function () {
+    var that = this;
+    var grid = Board.blankGrid();
+
+    _.each(this._snakes, function (snake) {
+      _.each(snake.segments, function (seg) {
+        grid[seg.i][seg.j] = snake.symbol;
       });
+    });
 
-      // join it up
-      return _.map(grid, function (row) { return row.join(""); }).join("\n");
-    }
+    // join it up
+    return _.map(
+      grid,
+      function (row) { return row.join(""); }
+    ).join("\n");
   }
-};
 
-if (!(typeof(module) === 'undefined')) {
-  module.exports = Snake;
-}
+  Board.blankGrid: function () {
+    var grid = [];
+
+    _.times(this.dim, function () {
+      return _.times(this.dim, function () {
+        return ".";
+      });
+    });
+
+    return grid;
+  };
+
+  return {
+    Coord: Coord,
+    Snake: Snake
+  }
+})();
