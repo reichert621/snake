@@ -16,12 +16,7 @@
     <pre id="grid"></pre>
 
     <script>
-      $(function () {
-        var snakeGameView =
-          new SnakeUI.SnakeGameView($("#grid")[0]);
-
-        snakeGameView.start();
-      });
+      $(function () { new SG.View($("#grid")).start(); });
     </script>
   </body>
 </html>

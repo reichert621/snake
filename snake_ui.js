@@ -1,60 +1,43 @@
-var SnakeUI = (function () {
-  var stepMillis = 500;
+(function (root) {
+  root.SG = root.SG || {};
 
-  function SnakeGameView(el) {
-    this.$el = $(el);
+  root.SG.View = View = function ($el) {
+    this.$el = $el;
 
     this.board = null;
     this.intervalId = null;
-    this.snake = null;
   }
 
-  SnakeGameView.prototype.handleKeyEvent = function (event) {
-    var that = this;
+  View.KEYS = {
+    38: "N",
+    39: "E",
+    40: "S",
+    37: "W"
+  };
 
-    switch (event.keyCode) {
-    case 38:
-      that.snake.turn('N');
-      break;
-    case 39:
-      that.snake.turn('E');
-      break;
-    case 40:
-      that.snake.turn('S');
-      break;
-    case 37:
-      that.snake.turn('W');
-      break;
+  View.STEP_MILLIS = 500;
+
+  View.prototype.handleKeyEvent = function (event) {
+    if (_(View.KEYS).has(event.keyCode)) {
+      this.board.snake.turn(View.KEYS[event.keyCode]);
+    } else {
+      // some other key was pressed; ignore.
     }
   };
 
-  SnakeGameView.prototype.step = function () {
-    var that = this;
-
-    that.snake.move();
-    that.$el.html(that.board.render());
+  View.prototype.step = function () {
+    this.board.snake.move();
+    this.$el.html(this.board.render());
   };
 
-  SnakeGameView.prototype.start = function () {
-    var that = this;
+  View.prototype.start = function () {
+    this.board = new SG.Board(20);
 
-    that.board = new SG.Board(20);
-    that.snake = that.board.snake;
+    $(window).keydown(this.handleKeyEvent.bind(this));
 
-    $(window).keydown(that.handleKeyEvent.bind(that));
-    that._startStepLoop();
-  };
-
-  SnakeGameView.prototype._startStepLoop = function () {
-    var that = this;
-
-    that.intervalId = window.setInterval(
-      that.step.bind(that),
-      stepMillis
+    this.intervalId = window.setInterval(
+      this.step.bind(this),
+      View.STEP_MILLIS
     );
   };
-
-  return {
-    SnakeGameView: SnakeGameView
-  };
-})();
+})(this);
