@@ -1,92 +1,65 @@
-var SnakeGame = (function () {
-  function Coord(i, j) {
+(function (root) {
+  root.SG = root.SG || {};
+
+  root.SG.Coord = Coord = function (i, j) {
     this.i = i;
     this.j = j;
-  }
-
-  Coord.prototype.plus = function (coord2) {
-    var that = this;
-
-    return new Coord(that.i + coord2.i, that.j + coord2.j);
   };
 
-  function Snake(board, symbol) {
-    this.dir = 'N';
-    this.symbol = symbol;
+  Coord.prototype.plus = function (coord2) {
+    return new Coord(this.i + coord2.i, this.j + coord2.j);
+  };
+
+  root.SG.Snake = Snake = function (board) {
+    this.dir = "N";
 
     var center = new Coord(board.dim / 2, board.dim / 2);
     this.segments = [center];
-  }
-
-  Snake.prototype.turn = function (dir) {
-    var that = this;
-
-    that.dir = dir;
   };
+
+  Snake.DIFFS = {
+    "N": new Coord(-1, 0),
+    "E": new Coord(0, 1),
+    "S": new Coord(1, 0),
+    "W": new Coord(0, 1)
+  };
+
+  Snake.SYMBOL = "S";
 
   Snake.prototype.move = function () {
-    var that = this;
-    var head = _.last(that.segments);
+    var head = _(this.segments).last();
 
-    var diff = null;
-    switch (that.dir) {
-    case 'N':
-      diff = new Coord(-1, 0);
-      break;
-    case 'E':
-      diff = new Coord(0, 1);
-      break;
-    case 'S':
-      diff = new Coord(1, 0);
-      break;
-    case 'W':
-      diff = new Coord(0, -1);
-      break;
-    }
-
-    that.segments.push(head.plus(diff));
-    that.segments.shift();
+    this.segments.push(head.plus(Snake.DIFFS[this.dir]));
+    this.segments.shift();
   };
 
-  function Board(dim) {
+  Snake.prototype.turn = function (dir) {
+    this.dir = dir;
+  };
+
+  SG.Board = Board = function (dim) {
     this.dim = dim;
-    this.snakes = [];
-  }
-
-  Board.prototype.addSnake = function (snake) {
-    var that = this;
-
-    that.snakes.push(snake);
+    this.snake = new Snake(this);
   };
 
-  Board.prototype.render = function () {
-    var that = this;
-
-    var grid = Board.blankGrid(that.dim);
-    _.each(that.snakes, function (snake) {
-      _.each(snake.segments, function (seg) {
-        grid[seg.i][seg.j] = snake.symbol;
-      });
-    });
-
-    // join it up
-    return _.map(
-      grid,
-      function (row) { return row.join(""); }
-    ).join("\n");
-  }
+  Board.BLANK_SYMBOL = ".";
 
   Board.blankGrid = function (dim) {
     return _.times(dim, function () {
       return _.times(dim, function () {
-        return ".";
+        return Board.BLANK_SYMBOL
       });
     });
   };
 
-  return {
-    Board: Board,
-    Coord: Coord,
-    Snake: Snake
-  }
-})();
+  Board.prototype.render = function () {
+    var grid = Board.blankGrid(this.dim);
+
+    _(this.snake.segments).each(function (seg) {
+      grid[seg.i][seg.j] = Snake.SYMBOL;
+    });
+
+    // join it up
+    return _(grid).map(function (row) { return row.join(""); }).join("\n");
+  };
+})(this);

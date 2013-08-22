@@ -38,9 +38,8 @@ var SnakeUI = (function () {
   SnakeGameView.prototype.start = function () {
     var that = this;
 
-    that.board = new SnakeGame.Board(20);
-    that.snake = new SnakeGame.Snake(that.board, 'S');
-    that.board.addSnake(that.snake);
+    that.board = new SG.Board(20);
+    that.snake = that.board.snake;
 
     $(window).keydown(that.handleKeyEvent.bind(that));
     that._startStepLoop();
