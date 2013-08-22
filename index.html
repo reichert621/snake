@@ -13,12 +13,12 @@
   </head>
 
   <body>
-    <pre id="canvas"></pre>
+    <pre id="grid"></pre>
 
     <script>
       $(function () {
         var snakeGameView =
-          new SnakeUI.SnakeGameView($("#canvas")[0]);
+          new SnakeUI.SnakeGameView($("#grid")[0]);
 
         snakeGameView.start();
       });
