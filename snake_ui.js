@@ -25,9 +25,38 @@
     }
   };
 
+  View.prototype.render = function () {
+    // simple text based rendering
+    // this.$el.html(this.board.render());
+
+    var view = this;
+
+    function buildCellsMatrix () {
+      return _.times(view.board.dim, function () {
+        return _.times(view.board.dim, function () {
+          return $('<div class="cell"></div>');
+        });
+      });      
+    }
+
+    var cellsMatrix = buildCellsMatrix();
+    console.log(cellsMatrix);
+    _(this.board.snake.segments).each(function (seg) {
+      cellsMatrix[seg.i][seg.j].addClass("snake");
+    });
+
+    this.$el.empty();
+    _(cellsMatrix).each(function (row) {
+      var $rowEl = $('<div class="row"></div>');
+      _(row).each(function ($cell) { $rowEl.append($cell) });
+      view.$el.append($rowEl);
+    });
+  };
+
   View.prototype.step = function () {
     this.board.snake.move();
-    this.$el.html(this.board.render());
+
+    this.render();
   };
 
   View.prototype.start = function () {
