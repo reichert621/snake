@@ -1,7 +1,7 @@
 (function (root) {
-  root.SG = root.SG || {};
+  var SG = root.SG = (root.SG || {});
 
-  root.SG.Coord = Coord = function (i, j) {
+  var Coord = SG.Coord = function (i, j) {
     this.i = i;
     this.j = j;
   };
@@ -10,7 +10,7 @@
     return new Coord(this.i + coord2.i, this.j + coord2.j);
   };
 
-  root.SG.Snake = Snake = function (board) {
+  var Snake = SG.Snake = function (board) {
     this.dir = "N";
 
     var center = new Coord(board.dim / 2, board.dim / 2);
@@ -37,7 +37,7 @@
     this.dir = dir;
   };
 
-  SG.Board = Board = function (dim) {
+  var Board = SG.Board = function (dim) {
     this.dim = dim;
     this.snake = new Snake(this);
   };

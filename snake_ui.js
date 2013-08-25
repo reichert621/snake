@@ -1,7 +1,7 @@
 (function (root) {
-  root.SG = root.SG || {};
+  var SG = root.SG = (root.SG || {});
 
-  root.SG.View = View = function ($el) {
+  var View = SG.View = function ($el) {
     this.$el = $el;
 
     this.board = null;
