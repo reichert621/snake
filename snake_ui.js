@@ -36,11 +36,10 @@
         return _.times(view.board.dim, function () {
           return $('<div class="cell"></div>');
         });
-      });      
+      });
     }
 
     var cellsMatrix = buildCellsMatrix();
-    console.log(cellsMatrix);
     _(this.board.snake.segments).each(function (seg) {
       cellsMatrix[seg.i][seg.j].addClass("snake");
     });
