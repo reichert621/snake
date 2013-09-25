@@ -15,7 +15,7 @@
     37: "W"
   };
 
-  View.STEP_MILLIS = 500;
+  View.STEP_MILLIS = 100;
 
   View.prototype.handleKeyEvent = function (event) {
     if (_(View.KEYS).has(event.keyCode)) {
@@ -30,19 +30,24 @@
     // this.$el.html(this.board.render());
 
     var view = this;
+    var board = view.board;
 
     function buildCellsMatrix () {
-      return _.times(view.board.dim, function () {
-        return _.times(view.board.dim, function () {
+      return _.times(board.dim, function () {
+        return _.times(board.dim, function () {
           return $('<div class="cell"></div>');
         });
       });
     }
 
     var cellsMatrix = buildCellsMatrix();
-    _(this.board.snake.segments).each(function (seg) {
-      cellsMatrix[seg.i][seg.j].addClass("snake");
+    _(board.snake.segments).each(function (seg) {
+      if (view.board.validMove(seg)) {
+        cellsMatrix[seg.i][seg.j].addClass("snake");
+      }
     });
+
+    cellsMatrix[board.apple.position.i][board.apple.position.j].addClass("apple");
 
     this.$el.empty();
     _(cellsMatrix).each(function (row) {
@@ -53,9 +58,13 @@
   };
 
   View.prototype.step = function () {
-    this.board.snake.move();
-
-    this.render();
+    if (_(this.board.snake.segments).last()) {
+      this.board.snake.move();
+      this.render();
+    } else {
+      alert("You lose!");
+      window.clearInterval(this.intervalId);
+    }
   };
 
   View.prototype.start = function () {
