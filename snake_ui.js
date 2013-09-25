@@ -42,9 +42,7 @@
 
     var cellsMatrix = buildCellsMatrix();
     _(board.snake.segments).each(function (seg) {
-      if (view.board.validMove(seg)) {
-        cellsMatrix[seg.i][seg.j].addClass("snake");
-      }
+      cellsMatrix[seg.i][seg.j].addClass("snake");
     });
 
     cellsMatrix[board.apple.position.i][board.apple.position.j].addClass("apple");
