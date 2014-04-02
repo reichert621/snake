@@ -53,6 +53,8 @@
       _(row).each(function ($cell) { $rowEl.append($cell) });
       view.$el.append($rowEl);
     });
+		
+		$('#score').html(this.board.snake.segments.length);
   };
 
   View.prototype.step = function () {
@@ -60,7 +62,7 @@
       this.board.snake.move();
       this.render();
     } else {
-      alert("You lose!");
+      $('#score').html("<p>You lose!</p>");
       window.clearInterval(this.intervalId);
     }
   };

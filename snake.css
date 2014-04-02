@@ -1,20 +1,39 @@
+#grid {
+	float:left;
+	margin: 30px 0px 30px 30px;
+}
+
+#sidebar {
+	font-size: 18px;
+	margin-top: 50px;
+}
+
+#score {
+	font-size: 24px;
+}
+
 .cell {
   float: left;
   height: 20px;
   width: 20px;
-  background: #eee;
-
-  border: solid gray 1px;
+  background: #66C266;
 }
 
 .snake {
-  background-color: green
+  background-color: blue;
+	border-radius: 2px;
 }
 
 .apple {
-  background-color: red;
+  background-color: brown;
+	border-radius: 2px;
 }
 
 .row {
   clear: both;
 }
+
+.left {
+	float: left;
+}
+

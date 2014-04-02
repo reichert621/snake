@@ -1,6 +1,8 @@
 <html>
   <head>
     <title>Great snakes!</title>
+		
+		<link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 
     <script type="text/javascript"
              src="jquery-1.9.1.js"></script>
@@ -14,7 +16,27 @@
   </head>
 
   <body>
-    <div id="grid"></div>
+	<div class="container">
+			<div class="row outline">
+				<div class="col-md-6 left">
+			    <div id="grid"></div>
+				</div>
+				<div class="col-md-6 left">
+					<div id="sidebar">
+						<h1>How to play:</h1>
+						<p>
+							Navigate with the arrow keys. <br>
+							Eat as many cookies as you can! <br>
+						</p>
+						
+						<h1>Score:</h1>
+						<div id="score"></div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		
 
     <script>
       $(function () { new SG.View($("#grid")).start(); });
